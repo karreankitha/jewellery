@@ -3,70 +3,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Opal & Aura Jewellery</title>
     <style>
-            .card{
-                width: 300px;
-                height:400px;
-                background-color:yellowgreen;  
-              }
-              .card:hover{
-                width: 300px;
-                height:400px;
-                cursor: pointer;
-                background-color:green;  
-              }
-              .img{
-                width: 300px;
-                height:400px;
-                cursor: pointer;  
-              }
-              .img:hover{
-                width: 300px;
-                height:400px;
-                cursor: pointer;  
-              }
-</style>
-</head>
-<body>
-<canvas id="myChart" width="400" height="400"></canvas>
-<script>
-const ctx = document.getElementById('myChart').getContext('2d');
-const myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-        datasets: [{
-            label: 'Our Numbers',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
+        :root {
+            --bg: #f3efe6;
+            --surface: #ffffff;
+            --text: #2b2b2b;
+            --muted: #6d6d6d;
+            --accent: #bc8d6f;
+            --accent-dark: #8f6d52;
+            --border: rgba(43, 43, 43, 0.08);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(180deg, var(--bg) 0%, #f8f2e8 100%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .page {
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-dark);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: 3rem;
+            padding: 4rem 2rem 3rem;
+        }
+
+        .hero-copy {
+            max-width: 540px;
+        }
+
+        .hero-copy small {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--accent-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 700;
+        }
+
+        .hero-copy h1 {
+            font-size: clamp(2.4rem, 4vw, 4.5rem);
+            margin-bottom: 1rem;
+            line-height: 1.05;
+        }
+
+        .hero-copy p {
+            color: var(--muted);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 999px;
+            padding: 0.95rem 1.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 14px 30px rgba(188, 141, 111, 0.18);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .hero-image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.28), transparent 40%);
+            pointer-events: none;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .section {
+            padding: 3rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title p {
+            color: var(--muted);
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.75rem;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 28px 60px rgba(0, 0, 0, 0.09);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+        }
+
+        .product-card-content {
+            padding: 1.5rem;
+        }
+
+        .product-card h3 {
+            margin-bottom: 0.75rem;
+            font-size: 1.15rem;
+        }
+
+        .product-card small {
+            display: block;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-card p {
+            color: var(--muted);
+            margin-bottom: 1.25rem;
+        }
+
+        .product-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .product-price span {
+            color: var(--accent-dark);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 1.75rem;
+            text-align: center;
+        }
+
+        .feature-card h4 {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        footer {
+            padding: 2rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 980px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .product-grid,
+            .feature-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
-    }
-});
-</script>
+
+        @media (max-width: 720px) {
+            .topbar {
+                padding: 1rem 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 2.5rem;
+                padding-bottom: 2rem;
+            }
+
+            .hero-image {
+                min-height: 360px;
+            }
+
+            .product-grid,
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="topbar">
+            <div class="brand">Opal & Aura</div>
+            <nav class="nav-links">
+                <a href="#collections">Collections</a>
+                <a href="#best-sellers">Best Sellers</a>
+                <a href="#story">Our Story</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="hero-copy">
+                    <small>Handcrafted fine jewellery</small>
+                    <h1>Timeless pieces for every moment.</h1>
+                    <p>Discover modern jewellery designed with soft curves, warm metals, and luminous stones that shine as beautifully as you do.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary">Shop the Collection</button>
+                        <button class="btn btn-secondary">Explore the Studio</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=1200&q=80" alt="Jewellery product shot">
+                </div>
+            </section>
+
+            <section id="collections" class="section">
+                <div class="section-title">
+                    <h2>Featured Collections</h2>
+                    <p>Designed for day-to-night elegance, our collections blend sculptural form with delicate details to create jewellery you can wear forever.</p>
+                </div>
+                <div class="product-grid">
+                    <article class="product-card">
+                        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=900&q=80" alt="Gold ring">
+                        <div class="product-card-content">
+                            <small>Signature Ring</small>
+                            <h3>Moonlit Gold</h3>
+                            <p>Elegant gold band with a luminous moonstone center for subtle sparkle.</p>
+                            <div class="product-price">
+                                <span>$180</span>
+                                <button class="btn btn-secondary">View</button>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=900&q=80" alt="Bracelet">
+                        <div class="product-card-content">
+                            <small>Everyday Bracelet</small>
+                            <h3>Petal Chain</h3>
+                            <p>Refined chain bracelet with soft pearly tones crafted for effortless layering.</p>
+                            <div class="product-price">
+                                <span>$125</span>
+                                <button class="btn btn-secondary">View</button>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="product-card">
+                        <img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=900&q=80" alt="Necklace">
+                        <div class="product-card-content">
+                            <small>Statement Necklace</small>
+                            <h3>Radiant Aura</h3>
+                            <p>Layered necklace with opal accents that catch the light in every direction.</p>
+                            <div class="product-price">
+                                <span>$240</span>
+                                <button class="btn btn-secondary">View</button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section id="best-sellers" class="section" style="background: rgba(255,255,255,0.72);">
+                <div class="section-title">
+                    <h2>Why customers love us</h2>
+                    <p>From ethically sourced materials to expert craftsmanship, every detail is made with care for the modern jewellery lover.</p>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>Ethical sourcing</h4>
+                        <p>Conflict-free stones and responsibly sourced metals give you peace of mind.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Bespoke design</h4>
+                        <p>Custom engraving and tailored sizing bring a personal touch to every order.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>Free shipping</h4>
+                        <p>Enjoy complimentary worldwide shipping and elegant gift wrapping on every purchase.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="story" class="section">
+                <div class="section-title">
+                    <h2>Crafted with intention</h2>
+                    <p>Opal & Aura is built on minimal beauty, classic silhouettes, and jewellery made to feel like a second skin.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            © 2026 Opal & Aura • Designed for everyday elegance
+        </footer>
+    </div>
 </body>
 </html>
